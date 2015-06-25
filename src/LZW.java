@@ -7,7 +7,7 @@ import java.util.HashMap;
  */
 
 public class LZW {
-    static int limit = 256;
+    static int initSize = 256;
 
     public int compress(String from, String to) {
         FileInputStream fin;
@@ -27,7 +27,7 @@ public class LZW {
         ArrayList<Integer> compressedStream = new ArrayList<>();
 
         // init dict
-        int sizeOfDict = limit;
+        int sizeOfDict = initSize;
         for (int i = 0; i < 256; i++) {
             dict.put(String.valueOf((char) i), i);
         }
@@ -94,7 +94,7 @@ public class LZW {
             return -1;
         }
 
-        int sizeOfDict = limit;
+        int sizeOfDict = initSize;
         HashMap<Integer, String> dict = new HashMap<>();
         ArrayList<String> decompressedStream = new ArrayList<>();
 
@@ -177,7 +177,7 @@ public class LZW {
         HashMap<String, Integer> dict = new HashMap<>();
 
         // init dict
-        int sizeOfDict = limit;
+        int sizeOfDict = initSize;
         for (int i = 0; i < 256; i++) {
             dict.put(String.valueOf((char) i), i);
         }
@@ -234,7 +234,7 @@ public class LZW {
             return -1;
         }
 
-        int sizeOfDict = limit;
+        int sizeOfDict = initSize;
         HashMap<Integer, String> dict = new HashMap<>();
 
         // init dict
