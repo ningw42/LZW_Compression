@@ -57,10 +57,11 @@ public class LZW {
             }
         }
 
-        numberOfBytesPerCode = ((int) ((Math.ceil(Math.log(dict.size()) / Math.log(2))))) / 8;
+        numberOfBytesPerCode = (int) Math.ceil((Math.log(dict.size()) / Math.log(2) / 8));
 
         try {
-            fout.write(numberOfBytesPerCode);   // first of the output file indicate the numberOfBytesPerCode
+            fout.write(numberOfBytesPerCode);
+//            write(fout, numberOfBytesPerCode, 4);   // first of the output file indicate the numberOfBytesPerCode
             for (int t : compressedStream) {
                 write(fout, t, numberOfBytesPerCode);
             }
@@ -68,6 +69,9 @@ public class LZW {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        System.out.println(dict.size());
+        System.out.println(numberOfBytesPerCode);
 
         try {
             fin.close();
@@ -84,10 +88,13 @@ public class LZW {
         FileOutputStream fout;
         int numberOfBytesPerCode;
 
+        byte tempBuffer[] = new byte[4];
         try {
             fin = new FileInputStream(from);
             fout = new FileOutputStream(to);
-            numberOfBytesPerCode = fin.read();  // read in the metadata that indicate the numberOfBytesPerCode
+            numberOfBytesPerCode = fin.read();
+//            fin.read(tempBuffer);  // read in the metadata that indicate the numberOfBytesPerCode
+//            numberOfBytesPerCode = toInt(tempBuffer, 4);
         } catch (IOException e) {
             System.out.println("Can\'t Open the Specified File!");
             e.printStackTrace();
@@ -150,6 +157,9 @@ public class LZW {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        System.out.println(dict.size());
+        System.out.println(numberOfBytesPerCode);
 
         try {
             fin.close();
@@ -318,7 +328,7 @@ public class LZW {
 
     public static void main(String[] args) {
         LZW lzw = new LZW();
-        lzw.compress("emailheaders.csv", "output.txt");
-        lzw.decompress("output.txt", "decompress.txt");
+        lzw.compress("image.jpg", "output.txt");
+        lzw.decompress("output.txt", "decompress.jpg");
     }
 }
