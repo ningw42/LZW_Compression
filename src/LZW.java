@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 /**
  * Created by Ning on 6/23/2015.
@@ -18,8 +19,8 @@ public class LZW {
             fin = new FileInputStream(from);
             fout = new FileOutputStream(to);
         } catch (FileNotFoundException e) {
-            System.out.println("Can\'t Open the Specified File!");
-            e.printStackTrace();
+            System.err.println("Can\'t Open the Specified File!");
+//            e.printStackTrace();
             return -1;
         }
 
@@ -70,8 +71,8 @@ public class LZW {
             e.printStackTrace();
         }
 
-        System.out.println(dict.size());
-        System.out.println(numberOfBytesPerCode);
+        System.out.println("Dictionary Size : " + dict.size());
+        System.out.println("Number Of Bytes Per Code : " + numberOfBytesPerCode);
 
         try {
             fin.close();
@@ -96,8 +97,8 @@ public class LZW {
 //            fin.read(tempBuffer);  // read in the metadata that indicate the numberOfBytesPerCode
 //            numberOfBytesPerCode = toInt(tempBuffer, 4);
         } catch (IOException e) {
-            System.out.println("Can\'t Open the Specified File!");
-            e.printStackTrace();
+            System.err.println("Can\'t Open the Specified File!");
+//            e.printStackTrace();
             return -1;
         }
 
@@ -158,8 +159,8 @@ public class LZW {
             e.printStackTrace();
         }
 
-        System.out.println(dict.size());
-        System.out.println(numberOfBytesPerCode);
+        System.out.println("Dictionary Size : " + dict.size());
+        System.out.println("Number Of Bytes Per Code : " + numberOfBytesPerCode);
 
         try {
             fin.close();
@@ -220,6 +221,8 @@ public class LZW {
                 e.printStackTrace();
             }
         }
+
+        System.out.println("Dictionary Size : " + dict.size());
 
         try {
             fin.close();
@@ -294,7 +297,7 @@ public class LZW {
             }
         }
 
-        System.out.println(dict.size());
+        System.out.println("Dictionary Size : " + dict.size());
 
         try {
             fin.close();
@@ -327,8 +330,30 @@ public class LZW {
     }
 
     public static void main(String[] args) {
+        System.out.println("<-C || -D || -C-INPLACE || --INPLACE> <Input File> <Output File> \n-C for compression, -D for decompression \n-InPlace for small file's in place compression");
+
         LZW lzw = new LZW();
-        lzw.compress("image.jpg", "output.txt");
-        lzw.decompress("output.txt", "decompress.jpg");
+
+        Scanner scanner = new Scanner(System.in);
+
+        String[] inputCommend;
+        while (scanner.hasNext()) {
+            inputCommend = scanner.nextLine().split(" ");
+            if (inputCommend.length < 3) {
+                System.out.println("Please Specify the File!");
+            } else {
+                if ("-C".equals(inputCommend[0])) {
+                    lzw.compress(inputCommend[1], inputCommend[2]);
+                } else if ("-D".equals(inputCommend[0])) {
+                    lzw.decompress(inputCommend[1], inputCommend[2]);
+                } else if ("-C-INPLACE".equals(inputCommend[0])) {
+                    lzw.compressInPlace(inputCommend[1], inputCommend[2]);
+                } else if ("-D-INPLACE".equals(inputCommend[0])) {
+                    lzw.decompressInPlace(inputCommend[1], inputCommend[2]);
+                } else {
+                    System.err.println("Wrong Commend");
+                }
+            }
+        }
     }
 }
